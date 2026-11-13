@@ -1,5 +1,5 @@
 <script setup>
-import { getBooks, createBook } from "../api/books";
+import { getBooks, createBook, deleteBook } from "../api/books";
 </script>
 
 <script>
@@ -24,6 +24,10 @@ export default {
     },
     async addBook(book) {
       await createBook(book);
+      await this.loadBooks();
+    },
+    async removeBook(id) {
+      await deleteBook(id);
       await this.loadBooks();
     },
     async submitCreateBook() {
@@ -86,12 +90,20 @@ export default {
       </tr>
     </thead>
     <tbody class="">
-      <tr v-for="books in books" :key="books.id" class="">
-        <td class="">{{ books.id }}</td>
-        <td class="">{{ books.title }}</td>
-        <td class="">{{ books.author }}</td>
-        <td class="">{{ books.year }}</td>
-        <td class="">-</td>
+      <tr v-for="book in books" :key="book.id" class="">
+        <td class="">{{ book.id }}</td>
+        <td class="">{{ book.title }}</td>
+        <td class="">{{ book.author }}</td>
+        <td class="">{{ book.year }}</td>
+        <td class="">
+          <button
+            class="ml-2 border-2 border-rose-500 p-2 text-rose-800 cursor-pointer"
+            type="button"
+            @click="removeBook(book.id)"
+          >
+            Törlés
+          </button>
+        </td>
       </tr>
     </tbody>
   </table>
